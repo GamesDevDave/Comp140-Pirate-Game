@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     float playerSpeed = 2f;
     Rigidbody rb;
-    bool anchorDown = false;
+    public bool anchorDown = false;
 
     private void Start()
     {
@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = transform.forward * playerSpeed;
         }
+
+        Turning();
     }
 
     private void Anchor()
@@ -33,6 +35,18 @@ public class PlayerMovement : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.F) && anchorDown == true)
         {
             anchorDown = false;
+        }
+    }
+
+    private void Turning()
+    {
+        if (Input.GetKey(KeyCode.D))
+        {
+            transform.Rotate(0, 1, 0);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            transform.Rotate(0, -1, 0);
         }
     }
 }
