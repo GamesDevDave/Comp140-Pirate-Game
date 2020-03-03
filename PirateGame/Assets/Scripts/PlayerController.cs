@@ -11,10 +11,13 @@ public class PlayerController : MonoBehaviour
     public bool anchorDown = false;
     public GameObject mainCamera;
     public GameObject sideCamera;
+    public GameObject cannon;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
@@ -43,6 +46,7 @@ public class PlayerController : MonoBehaviour
             sideCamera.SetActive(false);
             mainCamera.SetActive(true);
             anchorDown = false;
+            cannon.transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
         }
     }
 
