@@ -9,7 +9,9 @@ public class CannonFiring : MonoBehaviour
     [SerializeField]
     float minRotation = -60f;
     [SerializeField]
-    float rotationSpeed;
+    float currentRotation;
+    [SerializeField]
+    float rotationSpeed = 50f;
 
     bool hasFired = true;
 
@@ -22,6 +24,6 @@ public class CannonFiring : MonoBehaviour
 
     private void DetectInput()
     {
-        cannon.transform.Rotate(0, Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime, 0, Space.World);
+        cannon.transform.Rotate(0, Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime, 0, Space.World);
     }
 }
