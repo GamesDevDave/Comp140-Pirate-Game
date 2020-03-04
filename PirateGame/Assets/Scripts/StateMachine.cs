@@ -20,6 +20,12 @@ public class StateMachine : MonoBehaviour
     [SerializeField] Vector3 rotationAmount = new Vector3(0f, 360f, 0f);
     [SerializeField] bool canShoot = true;
     [SerializeField] float firingSpeed = 1000f;
+    [SerializeField] float xSpread;
+    [SerializeField] float zSpread;
+    [SerializeField] float yOffset;
+    [SerializeField] float rotSpeed;
+    [SerializeField] float timer = 0f;
+
 
     void Start()
     {
@@ -52,7 +58,7 @@ public class StateMachine : MonoBehaviour
                 {
                     
                     
-
+                        
                     break;
                 }
 
@@ -69,27 +75,12 @@ public class StateMachine : MonoBehaviour
                 }
 
             case State.Circling:
-                { 
-                    if (Physics.Raycast(midPoint.position, midPoint.TransformDirection(Vector3.right), out hit) && hit.collider.gameObject.CompareTag("Player"))
-                    {
-                        Debug.DrawRay(midPoint.position, midPoint.TransformDirection(Vector3.right) * 20, Color.red);
-                        Debug.Log("Did Hit");
-                        if (canShoot)
-                        {
-                            GameObject cannonballClone;
-                            StartCoroutine(shootingCooldown());
-                            cannonballClone = Instantiate(cannonball, midPoint.transform.position, transform.rotation);
-                            cannonballClone.GetComponent<Rigidbody>().AddForce(midPoint.transform.right * firingSpeed);
-                            Destroy(cannonballClone, 5f);
-                            canShoot = false;
-                        }
-                    }
+                {
 
-                    else
-                    {
-                        rotation = 10f * Time.deltaTime;
-                        transform.Rotate(0f, rotation, 0f);
-                    }
+                    timer += Time.deltaTime * rotSpeed;
+
+                    transform.LookAt(player.transform.position, Vector3.left);
+                    Rotate();
 
                     break;
                 }
@@ -114,6 +105,36 @@ public class StateMachine : MonoBehaviour
     {
         yield return new WaitForSeconds(4);
         canShoot = true;
+    }
+
+    void Rotate()
+    {
+        float x = -Mathf.Cos(timer) * xSpread;
+        float z = Mathf.Sin(timer) * zSpread;
+        Vector3 pos = new Vector3(x, yOffset, z);
+        transform.position = pos + player.transform.position;
+        transform.localRotation = Quaternion.Euler(Mathf.Clamp(0, 0, 0), transform.rotation.y, Mathf.Clamp(0, 0, 0));
+
+        if (Physics.Raycast(midPoint.position, midPoint.TransformDirection(Vector3.right), out hit) && hit.collider.gameObject.CompareTag("Player"))
+        {
+            Debug.DrawRay(midPoint.position, midPoint.TransformDirection(Vector3.right) * 20, Color.red);
+            Debug.Log("Did Hit");
+            if (canShoot)
+            {
+                GameObject cannonballClone;
+                StartCoroutine(shootingCooldown());
+                cannonballClone = Instantiate(cannonball, midPoint.transform.position, transform.rotation);
+                cannonballClone.GetComponent<Rigidbody>().AddForce(midPoint.transform.right * firingSpeed);
+                Destroy(cannonballClone, 5f);
+                canShoot = false;
+            }
+        }
+
+        else
+        {
+            rotation = 200f * Time.deltaTime;
+            transform.Rotate(0f, -rotation, 0f);
+        }
     }
 
 }

@@ -363,7 +363,7 @@ Transform:
   m_GameObject: {fileID: 276217277}
   m_LocalRotation: {x: -0, y: -0.38268322, z: -0, w: 0.9238797}
   m_LocalPosition: {x: 0, y: -13.55, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 3.4796798}
+  m_LocalScale: {x: 1.1182753, y: 1, z: 3.8950143}
   m_Children:
   - {fileID: 2001526144}
   m_Father: {fileID: 1109255945}
@@ -383,7 +383,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!195 &276217280
 NavMeshAgent:
@@ -430,6 +430,11 @@ MonoBehaviour:
   rotationAmount: {x: 0, y: 360, z: 0}
   canShoot: 1
   firingSpeed: 1000
+  xSpread: 20
+  zSpread: 20
+  yOffset: 0
+  rotSpeed: 0.2
+  timer: 0
 --- !u!65 &276217282
 BoxCollider:
   m_ObjectHideFlags: 0
