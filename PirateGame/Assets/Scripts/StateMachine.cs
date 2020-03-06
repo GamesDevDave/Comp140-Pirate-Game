@@ -10,21 +10,17 @@ public class StateMachine : MonoBehaviour
     public GameObject player;
     public Transform midPoint;
     public GameObject cannonball;
+    public GameObject waypoint;
 
     RaycastHit hit;
 
     [Header("Conditioning")]
     [SerializeField] State _currentState;
     [SerializeField] float distanceFromPlayer;
-    [SerializeField] float rotation;
-    [SerializeField] Vector3 rotationAmount = new Vector3(0f, 360f, 0f);
     [SerializeField] bool canShoot = true;
     [SerializeField] float firingSpeed = 1000f;
-    [SerializeField] float xSpread;
-    [SerializeField] float zSpread;
-    [SerializeField] float yOffset;
-    [SerializeField] float rotSpeed;
-    [SerializeField] float timer = 0f;
+    [SerializeField] float speed = 5f;
+
 
 
     void Start()
@@ -64,6 +60,8 @@ public class StateMachine : MonoBehaviour
 
             case State.Following:
                 {
+                    AI.isStopped = false;
+
                     AI.SetDestination(player.transform.position);
 
                     if (distanceFromPlayer < 20)
@@ -77,10 +75,14 @@ public class StateMachine : MonoBehaviour
             case State.Circling:
                 {
 
-                    timer += Time.deltaTime * rotSpeed;
+                    Vector3 pos1 = new Vector3(20 , 0, 15f);
+                    Vector3 pos2 = new Vector3(20 , 0, -15f);
 
-                    transform.LookAt(player.transform.position, Vector3.left);
-                    Rotate();
+                    waypoint.transform.localPosition = Vector3.Lerp(pos1, pos2, Mathf.PingPong(Time.time * speed, 1.0f));
+
+                    AI.SetDestination(waypoint.transform.position);
+
+                    transform.localRotation = player.transform.localRotation;
 
                     break;
                 }
@@ -107,14 +109,8 @@ public class StateMachine : MonoBehaviour
         canShoot = true;
     }
 
-    void Rotate()
+    private void Shoot()
     {
-        float x = -Mathf.Cos(timer) * xSpread;
-        float z = Mathf.Sin(timer) * zSpread;
-        Vector3 pos = new Vector3(x, yOffset, z);
-        transform.position = pos + player.transform.position;
-        transform.localRotation = Quaternion.Euler(Mathf.Clamp(0, 0, 0), transform.rotation.y, Mathf.Clamp(0, 0, 0));
-
         if (Physics.Raycast(midPoint.position, midPoint.TransformDirection(Vector3.right), out hit) && hit.collider.gameObject.CompareTag("Player"))
         {
             Debug.DrawRay(midPoint.position, midPoint.TransformDirection(Vector3.right) * 20, Color.red);
@@ -129,12 +125,5 @@ public class StateMachine : MonoBehaviour
                 canShoot = false;
             }
         }
-
-        else
-        {
-            rotation = 200f * Time.deltaTime;
-            transform.Rotate(0f, -rotation, 0f);
-        }
     }
-
 }
