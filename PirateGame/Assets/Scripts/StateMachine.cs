@@ -84,6 +84,8 @@ public class StateMachine : MonoBehaviour
 
                     transform.localRotation = player.transform.localRotation;
 
+                    Shoot();
+
                     break;
                 }
 
@@ -111,16 +113,16 @@ public class StateMachine : MonoBehaviour
 
     private void Shoot()
     {
-        if (Physics.Raycast(midPoint.position, midPoint.TransformDirection(Vector3.right), out hit) && hit.collider.gameObject.CompareTag("Player"))
+        if (Physics.Raycast(midPoint.position, midPoint.TransformDirection(Vector3.left), out hit) && hit.collider.gameObject.CompareTag("Player"))
         {
-            Debug.DrawRay(midPoint.position, midPoint.TransformDirection(Vector3.right) * 20, Color.red);
+            Debug.DrawRay(midPoint.position, midPoint.TransformDirection(Vector3.left) * 20, Color.red);
             Debug.Log("Did Hit");
             if (canShoot)
             {
                 GameObject cannonballClone;
                 StartCoroutine(shootingCooldown());
                 cannonballClone = Instantiate(cannonball, midPoint.transform.position, transform.rotation);
-                cannonballClone.GetComponent<Rigidbody>().AddForce(midPoint.transform.right * firingSpeed);
+                cannonballClone.GetComponent<Rigidbody>().AddForce(-midPoint.transform.right * firingSpeed);
                 Destroy(cannonballClone, 5f);
                 canShoot = false;
             }
