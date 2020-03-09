@@ -125,8 +125,10 @@ GameObject:
   - component: {fileID: 45413231}
   - component: {fileID: 45413230}
   - component: {fileID: 45413229}
+  - component: {fileID: 45413236}
   - component: {fileID: 45413234}
   - component: {fileID: 45413233}
+  - component: {fileID: 45413235}
   m_Layer: 9
   m_Name: PlayerObject
   m_TagString: Player
@@ -264,6 +266,34 @@ MonoBehaviour:
   cannonball: {fileID: 6283692205149905635, guid: 61f5f504b66ad064681caa0de8f64c44,
     type: 3}
   firingPoint: {fileID: 376888625}
+--- !u!114 &45413235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45413227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493277cc85d8dd44980f9372356b11a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controllerActive: 0
+  commPort: 6
+--- !u!114 &45413236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45413227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493277cc85d8dd44980f9372356b11a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controllerActive: 0
+  commPort: 6
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
