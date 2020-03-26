@@ -12,10 +12,12 @@ public class PlayerController : MonoBehaviour
     public GameObject mainCamera;
     public GameObject sideCamera;
     public GameObject cannon;
+    ArduinoInput arduinoInput;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        arduinoInput = GetComponent<ArduinoInput>();
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -29,7 +31,8 @@ public class PlayerController : MonoBehaviour
             rb.velocity = transform.forward * playerSpeed;
         }
 
-        Turning();
+        TurnWithPotentiometer();
+        //Turning();
     }
 
     private void Anchor()
@@ -48,6 +51,13 @@ public class PlayerController : MonoBehaviour
             anchorDown = false;
             cannon.transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
         }
+    }
+
+    private void TurnWithPotentiometer()
+    {
+        float yPos = arduinoInput.Remap(int.Parse(arduinoInput.value), 0, 1, 0, 10);
+
+        transform.Rotate(0, arduinoInput.steerValue * Time.deltaTime, 0);
     }
 
     private void Turning()
