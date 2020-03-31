@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     float playerSpeed = 2f;
     Rigidbody rb;
     [SerializeField]
-    float turnSpeed = 0.5f;
+    float turnSpeed = 0.1f;
     public bool anchorDown = false;
     public GameObject mainCamera;
     public GameObject sideCamera;
@@ -37,14 +37,14 @@ public class PlayerController : MonoBehaviour
 
     private void Anchor()
     {
-        if (Input.GetKeyDown(KeyCode.F) && anchorDown == false)
+        if (arduinoInput.anchorButtonBool && anchorDown == false)
         {
             mainCamera.SetActive(false);
             sideCamera.SetActive(true);
             anchorDown = true;
         }
 
-        else if (Input.GetKeyDown(KeyCode.F) && anchorDown == true)
+        else if (!arduinoInput.anchorButtonBool && anchorDown == true)
         {
             sideCamera.SetActive(false);
             mainCamera.SetActive(true);
@@ -55,20 +55,26 @@ public class PlayerController : MonoBehaviour
 
     private void TurnWithPotentiometer()
     {
-        float yPos = arduinoInput.Remap(int.Parse(arduinoInput.value), 0, 1, 0, 10);
 
-        transform.Rotate(0, arduinoInput.steerValue * Time.deltaTime, 0);
-    }
-
-    private void Turning()
-    {
-        if (Input.GetKey(KeyCode.D))
+        if (arduinoInput.steerValue > 1)
         {
-            transform.Rotate(0, turnSpeed, 0);
+            transform.Rotate(0, -arduinoInput.steerValue, 0);
         }
-        if (Input.GetKey(KeyCode.A))
+        else if (arduinoInput.steerValue < -1)
         {
-            transform.Rotate(0, -turnSpeed, 0);
+            transform.Rotate(0, -arduinoInput.steerValue, 0);
         }
     }
+
+    //private void Turning()
+    //{
+    //    if (Input.GetKey(KeyCode.D))
+    //    {
+    //        transform.Rotate(0, turnSpeed, 0);
+    //    }
+    //    if (Input.GetKey(KeyCode.A))
+    //    {
+    //        transform.Rotate(0, -turnSpeed, 0);
+    //    }
+    //}
 }

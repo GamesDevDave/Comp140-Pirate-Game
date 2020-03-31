@@ -11,7 +11,10 @@ public class ArduinoInput : MonoBehaviour
     public bool controllerActive = false;
     public int commPort = 3;
     public float steerValue;
-    public string value;
+    public float cannonValue;
+    string value;
+    public float anchorButtonPressed;
+    public bool anchorButtonBool = false;
 
     private SerialPort serial = null;
     private bool connected = false;
@@ -36,14 +39,40 @@ public class ArduinoInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (controllerActive)
         {
             WriteToArduino("I");                // Ask for the positions
             value = ReadFromArduino(50); // read the positions
-            steerValue = int.Parse(value);
+
+            if (value != null)                  // check to see if we got what we need
+            {
+                // EXPECTED VALUE FORMAT: "0-1023"
+                string[] values = value.Split('-');     // split the values
+
+                if (values.Length == 3)
+                {
+                    RemappingValues(values);
+                }
+            }
         }
     }
+
+    void RemappingValues(String[] values)
+    {
+        steerValue = Remap(int.Parse(values[0]), 0, 1023, -5, 5);            // scale the input. this could be done on the Arduino as well.
+        cannonValue = Remap(int.Parse(values[1]), 0, 1023, -5, 5);              // scale the input. this could be done on the Arduino as well.
+        anchorButtonPressed = Remap(int.Parse(values[2]), 0, 1, 0, 1);
+
+        if(anchorButtonPressed == 1)
+        {
+            anchorButtonBool = true;
+        }
+        else
+        {
+            anchorButtonBool = false;
+        }
+    }
+
 
     void WriteToArduino(string message)
     {

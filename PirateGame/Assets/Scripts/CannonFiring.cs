@@ -7,15 +7,14 @@ public class CannonFiring : MonoBehaviour
     [SerializeField]
     float rotation;
     [SerializeField]
-    float currentMouseRotation;
-    [SerializeField]
-    float rotationSpeed = 50f;
+    float rotationSpeed = 20f;
     [SerializeField]
     float firingSpeed = 30f;
 
     bool hasFired = false;
 
     PlayerController pc;
+    ArduinoInput arduinoIn;
 
     public GameObject cannon;
     public GameObject cannonball;
@@ -24,6 +23,7 @@ public class CannonFiring : MonoBehaviour
     private void Start()
     {
         pc = GetComponent<PlayerController>();
+        arduinoIn = GetComponent<ArduinoInput>();
     }
 
     private void Update()
@@ -37,20 +37,15 @@ public class CannonFiring : MonoBehaviour
 
     private void DetectInput()
     {
-
-        currentMouseRotation = Input.GetAxis("Mouse X");
         rotation = Mathf.Clamp(rotation, -120, -60);
 
-        if (currentMouseRotation > 0f)
+        if (arduinoIn.cannonValue > -1 && arduinoIn.cannonValue < 1f)
         {
-            rotation += 1f * rotationSpeed * Time.deltaTime;
 
-            cannon.transform.localRotation = Quaternion.Euler(0f, rotation, 0f);
         }
-
-        if (currentMouseRotation < 0f)
+        else
         {
-            rotation -= 1f * rotationSpeed * Time.deltaTime;
+            rotation -= arduinoIn.cannonValue * rotationSpeed * Time.deltaTime;
 
             cannon.transform.localRotation = Quaternion.Euler(0f, rotation, 0f);
         }
