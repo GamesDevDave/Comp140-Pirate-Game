@@ -37,7 +37,7 @@ public class CannonFiring : MonoBehaviour
 
     private void DetectInput()
     {
-        rotation = Mathf.Clamp(rotation, -120, -60);
+        rotation = Mathf.Clamp(rotation, -20, 20);
 
         if (arduinoIn.cannonValue > -1 && arduinoIn.cannonValue < 1f)
         {
