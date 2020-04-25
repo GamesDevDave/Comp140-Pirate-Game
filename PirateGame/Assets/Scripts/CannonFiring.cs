@@ -53,7 +53,7 @@ public class CannonFiring : MonoBehaviour
 
     private void DetectShot()
     {
-        if (Input.GetMouseButtonDown(0) && hasFired == false)
+        if (arduinoIn.fireButtonPressed == 1 && hasFired == false)
         {
             GameObject cannonballClone;
             cannonballClone = Instantiate(cannonball, firingPoint.transform.position, transform.rotation);
